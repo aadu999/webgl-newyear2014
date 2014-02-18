@@ -1,0 +1,769 @@
+<html>
+	<head>
+		<title>Happy New Year 2014! - kotori web solutions Maren Arnhold</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
+		<link href='http://fonts.googleapis.com/css?family=Ubuntu:500' rel='stylesheet' type='text/css'>
+		<script src="./jquery.js"></script>
+		<script src="./jquery.percentageloader-0.1.min.js"></script>
+		<script src="./three.min.js"></script>
+		<link rel="stylesheet" href="jquery.percentageloader-0.1.css" type="text/css" />
+		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+		<style>
+		
+			body {
+			  margin: 0px;
+			  overflow: hidden;
+
+			  
+			}
+			
+			div { margin: 0 auto; }
+			
+			canvas {
+			
+				display: block; /* fix necessary to remove space at bottom of canvas */
+			   box-sizing:border-box;
+			  -webkit-box-sizing:border-box;
+			  -moz-box-sizing:border-box;
+			  -o-box-sizing:border-box;
+			}
+			
+			#topbar {
+			
+				width:100%;background:url('blacktransparent.png');font-size:24px;color:#fff;z-index:100;position:absolute;bottom:20px;padding:1em;font-family:Ubuntu,Arial,sans-serif;text-align:center;
+				box-sizing:border-box;
+				-webkit-box-sizing:border-box;
+				-moz-box-sizing:border-box;
+				-o-box-sizing:border-box;
+				display:none;
+			}
+			
+			#social { position:absolute;top:0px;right:10px;z-index:100;font-size:2.5em;color:#fff;padding:1em; opacity:.8; }
+			
+			#loader { width:100%;height:100%;min-height:600px;font-family:Ubuntu;font-size:3em;padding-top:300px; position:absolute;text-align:center;top:0;left:0;z-index:-1;
+				box-sizing:border-box;
+				-webkit-box-sizing:border-box;
+				-moz-box-sizing:border-box;
+				-o-box-sizing:border-box;
+			}
+			
+			.smaller { font-size:.7em; }
+			.smallest { font-size:.5em; }
+			
+			a { color:#ccc; text-decoration: none; font-weight: bold; }
+			
+			.fa { margin-right:.2em; }
+			.fa:hover { color:#aaa; }
+			.fa a { color:#fff; }
+		
+		</style>	
+	</head>
+	<body>
+			<audio id="knall1">
+				<source src="bam.ogg" type="audio/ogg">
+				<source src="bam.mp3" type="audio/mpeg">
+			</audio> 
+			<audio id="knall2">
+				<source src="bam.ogg" type="audio/ogg">
+				<source src="bam.mp3" type="audio/mpeg">
+			</audio> 
+			<audio id="knall3">
+				<source src="bam.ogg" type="audio/ogg">
+				<source src="bam.mp3" type="audio/mpeg">
+			</audio> 
+			<audio id="knall4">
+				<source src="bam.ogg" type="audio/ogg">
+				<source src="bam.mp3" type="audio/mpeg">
+			</audio> 
+			<audio id="knall5">
+				<source src="bam.ogg" type="audio/ogg">
+				<source src="bam.mp3" type="audio/mpeg">
+			</audio> 
+			<audio id="knall6">
+				<source src="bam.ogg" type="audio/ogg">
+				<source src="bam.mp3" type="audio/mpeg">
+			</audio> 			
+			<div id="topbar">
+				<a href="http://www.kotori.de">kotori web solutions wünscht einen guten Rutsch und ein erfolgreiches neues Jahr 2014!</a><br />
+				<span class="smaller">Happy new year - Bonne année - Feliz año nuevo - Gelukkig nieuwjaar - Srečno novo leto - สวัสดีปีใหม่ -  明けましておめでとうございます</span><br /><br />
+				<span class="smallest">Programming in WebGL/Three.js: <a href="https://plus.google.com/+MarenArnholdBerlin" rel="author">Maren Arnhold</a> - TV Tower model and texture by <a href="http://sketchup.google.com/3dwarehouse/details?mid=c6adcf91ad165f9c19c095d6e94545e">Thomas Laubner</a> - Building &amp; floor textures from <a href="http://freetextures.3dtotal.com/">freetextures.3dtotal.com</a> - Background skybox graphics done with <a href="http://sourceforge.net/projects/spacescape/">Spacescape app by Alex Peterson</a> - <a href="http://www.kotori.de/impressum.html">Impressum</a></span><br />
+			</div>
+
+			<div id="social">
+				<a href="https://www.facebook.com/kotori.de"><i class="fa fa-facebook-square"></i></a>
+				<a href="https://plus.google.com/+KotoriDe"><i class="fa fa-google-plus-square"></i></a>
+				<a href="https://twitter.com/kotori_de"><i class="fa fa-twitter-square"></i></a>
+			</div>
+			
+			<div id="loader">
+
+				Loading - please wait...
+
+				<script>
+						var $topLoader;
+						$(function() {
+						  $topLoader = $("#loader").percentageLoader({width: 150, height: 150, controllable : true, progress : 0, onProgressUpdate : function(val) {
+							  $topLoader.setValue(Math.round(val * 100.0));
+							}});
+
+						  var topLoaderRunning = false;
+
+
+						});      
+				</script>
+
+			</div>
+			
+			<script>
+					
+					/* 	
+					
+						New Year's Greeting Card 2014 
+						
+						Maren Arnhold / kotori web solutions, Berlin
+						
+						Script licensed under CC-BY-SA
+					
+					*/
+					
+					// Detect WebGL
+					
+					var supportsWebGL = ( function () { try { return !! window.WebGLRenderingContext && !! document.createElement( 'canvas' ).getContext( 'experimental-webgl' ); } catch( e ) { return false; } } )();
+					
+					if (!supportsWebGL) {
+					
+						document.location.href="./sorry.php";
+					
+					}
+					
+					// Variable definitions
+					
+					var camera, scene, renderer, loader, matgray, matblack, kotoripink, controls, tower, building;
+					var buildingmat1, buildingmat2, buildingmat3, buildingmat4, floormat;
+					var buildingno = 400;
+					
+					var particles = [];
+					var particleColors = [];
+					var particleSystem = [];
+					var currentParticleSystemCount = 0; // One system to start with
+					var particleSystemCount = 5 // Maximum 6 systems [0-5]
+					var particleCount = 500;
+					var particleLight = [];
+					var partstartx, partstarty, partstartz;
+					var turningStage = 0;
+					var intervaltoggle = 0;
+					var disx, disz;
+					var disx2, disz2;
+					var floor;
+					var zturner = 0;
+										
+					var circular = Math.PI-1;
+					
+					// Bootstrapper
+					
+					$(document).ready(function(){
+					
+						init();
+						animate();
+
+						
+					});
+					
+					
+					// Init function
+					
+					function init() {
+
+						// Setup camera
+					
+						camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+						camera.position.z = 1499;
+						camera.position.x = 1499;
+						camera.position.y = 700;
+						camera.rotation.x = 0;
+						camera.rotation.y = 0;
+						camera.rotation.z = 0;
+
+						// Setup scene
+						
+						scene = new THREE.Scene();
+
+						// Materials with textures	
+						
+						matblack = new THREE.MeshLambertMaterial(
+							{
+								color: 0x000000
+							});				
+											
+						matgray = new THREE.MeshLambertMaterial(
+							{
+								color: 0x080808
+							});									
+								
+						kotoripink = new THREE.MeshLambertMaterial(
+							{
+								color: 0xCF8EAE
+							});				
+
+						floormat = [
+							   new THREE.MeshLambertMaterial({
+								   color: 0x000000
+							   }),
+							   new THREE.MeshLambertMaterial({
+								   color: 0x000000
+							   }),
+							   new THREE.MeshLambertMaterial({
+								   map: THREE.ImageUtils.loadTexture( 'Asphalt-8833.jpg' )
+							   }),
+							   new THREE.MeshLambertMaterial({
+								   color: 0x000000
+							   }),
+							   new THREE.MeshLambertMaterial({
+								  color: 0x000000
+							   }),
+							   new THREE.MeshLambertMaterial({
+									color: 0x000000
+							   })
+							];									
+		
+						buildingmat1 = [
+							   new THREE.MeshLambertMaterial({
+								   map: THREE.ImageUtils.loadTexture('Block-3343.jpg')
+							   }),
+							   new THREE.MeshLambertMaterial({
+								   map: THREE.ImageUtils.loadTexture('Block-3343.jpg')
+							   }),
+							   new THREE.MeshPhongMaterial({
+								color: 0x222222,
+								shininess: 100.0,
+								ambient: 0x222222,
+								emissive: 0x000000,
+								specular: 0xbbbbbb
+							  }),
+							   new THREE.MeshLambertMaterial({
+								   color: 0x222222
+							   }),
+							   new THREE.MeshLambertMaterial({
+								  map: THREE.ImageUtils.loadTexture('Block-3343.jpg')
+							   }),
+							   new THREE.MeshLambertMaterial({
+									map: THREE.ImageUtils.loadTexture('Block-3343.jpg')
+							   })
+							];				
+							
+						buildingmat2 = [
+							   new THREE.MeshLambertMaterial({
+								   map: THREE.ImageUtils.loadTexture('Block-3368.jpg')
+							   }),
+							   new THREE.MeshLambertMaterial({
+								   map: THREE.ImageUtils.loadTexture('Block-3368.jpg')
+							   }),
+							    new THREE.MeshPhongMaterial({
+								color: 0x444444,
+								shininess: 100.0,
+								ambient: 0x444444,
+								emissive: 0x000000,
+								specular: 0xbbbbbb
+							  }),
+							   new THREE.MeshLambertMaterial({
+								   color: 0x444444
+							   }),
+							   new THREE.MeshLambertMaterial({
+								  map: THREE.ImageUtils.loadTexture('Block-3368.jpg')
+							   }),
+							   new THREE.MeshLambertMaterial({
+									map: THREE.ImageUtils.loadTexture('Block-3368.jpg')
+							   })
+							];	
+
+						buildingmat3 = [
+							   new THREE.MeshLambertMaterial({
+								   map: THREE.ImageUtils.loadTexture('Block-3380.jpg')
+							   }),
+							   new THREE.MeshLambertMaterial({
+								   map: THREE.ImageUtils.loadTexture('Block-3380.jpg')
+							   }),
+							   new THREE.MeshPhongMaterial({
+								color: 0x333333,
+								shininess: 100.0,
+								ambient: 0x333333,
+								emissive: 0x000000,
+								specular: 0xbbbbbb
+							  }),
+							   new THREE.MeshLambertMaterial({
+								   color: 0x333333
+							   }),
+							   new THREE.MeshLambertMaterial({
+								  map: THREE.ImageUtils.loadTexture('Block-3380.jpg')
+							   }),
+							   new THREE.MeshLambertMaterial({
+									map: THREE.ImageUtils.loadTexture('Block-3380.jpg')
+							   })
+							];	
+
+						buildingmat4 = [
+							   new THREE.MeshLambertMaterial({
+								   map: THREE.ImageUtils.loadTexture('Block-3386.jpg')
+							   }),
+							   new THREE.MeshLambertMaterial({
+								   map: THREE.ImageUtils.loadTexture('Block-3386.jpg')
+							   }),
+							   new THREE.MeshPhongMaterial({
+								color: 0x222222,
+								shininess: 100.0,
+								ambient: 0x222222,
+								emissive: 0x111111,
+								specular: 0xbbbbbb
+							  }),
+							   new THREE.MeshLambertMaterial({
+								   color: 0x000000
+							   }),
+							   new THREE.MeshLambertMaterial({
+								  map: THREE.ImageUtils.loadTexture('Block-3386.jpg')
+							   }),
+							   new THREE.MeshLambertMaterial({
+									map: THREE.ImageUtils.loadTexture('Block-3386.jpg')
+							   })
+							];	
+							
+						// Create random buildings...
+						
+						for (var i=0;i<buildingno;i++){
+						
+									var buildingtex;
+									var buildingtexnr = Math.floor(Math.random()*4);
+									
+									// ... with variable facades.
+									
+									switch (buildingtexnr) {
+															
+											case 0:buildingtex = buildingmat1; break;
+											case 1:buildingtex = buildingmat2; break;
+											case 2:buildingtex = buildingmat3; break;
+											case 3:buildingtex = buildingmat4; break;
+											default: buildingtex = buildingmat1; break;
+									
+									}
+								
+									building = new THREE.Mesh(
+									  new THREE.CubeGeometry(300+Math.random()*400, 200+Math.random()*800, 300+Math.random()*400),
+									  new THREE.MeshFaceMaterial(buildingtex)
+									);
+								
+									var bposx = 0;
+									var bposz = 0;
+									
+									// Ensure buildings are never constructed in direct vicinity to the tower.
+									
+									while (((bposx > -450) && (bposx < 450)) &&  ((bposz > -450) && (bposz < 450)) ) { bposx = (Math.random()*8000)-4000; bposz = (Math.random()*8000)-4000; };
+									
+									building.position.x = bposx;
+									building.position.z = bposz;
+									building.position.y = -150;
+									scene.add(building);
+									
+						};
+						
+				
+						// TV Tower
+						
+						loader = new THREE.JSONLoader();
+
+						loader.load( "kotoriturm.js", function( geometry, materials ) {
+
+							var towermaterial = new THREE.MeshFaceMaterial(materials);
+							tower = new THREE.Mesh( geometry, towermaterial);
+							tower.scale.set( 400, 400, 400 );
+							tower.position.y = -200;
+							tower.position.x = 0;
+							tower.position.z = 0;
+							tower.rotation.x = 0;
+							tower.rotation.y = 0;
+							tower.rotation.z = 0;
+							tower.updateMatrix();
+							tower.overdraw = true;
+							scene.add( tower );
+							$topLoader.setProgress(.85);
+
+							addFireworkParticles(0);							
+							
+						} );	
+						
+							
+						// Lights
+						
+						var ambientLight = new THREE.AmbientLight(0x444444);
+						scene.add(ambientLight);
+
+						var directionalLight2 = new THREE.DirectionalLight(0xAAAAAA);
+						directionalLight2.position.set(500, 150, 500).normalize();
+						scene.add(directionalLight2);
+						
+						var directionalLight3 = new THREE.DirectionalLight(0xAAAAAA);
+						directionalLight3.position.set(-500, 150, -500).normalize();
+						scene.add(directionalLight3);
+						
+						
+						// Skybox, textures
+						
+						var urls = [ 
+						  './space_right1.jpg',
+						  './space_left2.jpg',
+						  './space_top3.jpg',
+						  './space_bottom4.jpg',
+						  './space_front5.jpg',
+						  './space_back6.jpg'
+						];
+
+						var cubemap = THREE.ImageUtils.loadTextureCube(urls); 
+						cubemap.format = THREE.RGBFormat;
+
+						var shader = THREE.ShaderLib['cube']; 
+						shader.uniforms['tCube'].value = cubemap;
+
+						var skyBoxMaterial = new THREE.ShaderMaterial( {
+						  fragmentShader: shader.fragmentShader,
+						  vertexShader: shader.vertexShader,
+						  uniforms: shader.uniforms,
+						  depthWrite: false,
+						  side: THREE.BackSide
+						});
+
+						var skybox = new THREE.Mesh(
+						  new THREE.CubeGeometry(8000, 8000, 8000),
+						  skyBoxMaterial
+						);
+
+						scene.add(skybox);
+					
+						// Create floor
+						
+						floor = new THREE.Mesh(
+						  new THREE.CubeGeometry(8000, 1000, 8000),
+						  new THREE.MeshFaceMaterial(floormat)
+						);
+						
+						floor.position.y = -720;
+						
+						scene.add(floor);
+
+						// Initialize subarrays on particleColors so that each explosion will be of a different color,
+						// as well as explosion light sources.
+						
+						for (i=0;i<=particleSystemCount;i++) {
+					
+							particleColors[i] = new Array();
+							particleLight[i] = new THREE.SpotLight(0xffffff, 0.0); 
+							scene.add(particleLight[i]); 
+						
+						}
+
+						// Resize canvas correctly when window size changes
+						
+						window.addEventListener('resize', function() {
+						  var WIDTH = window.innerWidth,
+							  HEIGHT = window.innerHeight;
+						  renderer.setSize(WIDTH, HEIGHT);
+						  camera.aspect = WIDTH / HEIGHT;
+						  camera.updateProjectionMatrix();
+						});
+									
+						// Render scene
+									
+						try {
+							
+							renderer = new THREE.WebGLRenderer({antialias: false});
+							renderer.setSize( window.innerWidth, window.innerHeight );
+							renderer.autoClear = true;
+						
+							document.body.appendChild( renderer.domElement );
+							has_gl = true;
+							
+							animate();
+							
+						}
+						
+						catch (e) {
+						
+							return;
+						}
+						
+
+					}
+
+					function doTurn(){
+
+					
+						
+						turningStage++;
+						return true;
+						
+					}					
+					
+					// Firework particles function
+					
+					function addFireworkParticles(j){
+								
+							if ((j==1) && (currentParticleSystemCount < 1)) { currentParticleSystemCount = 1; };
+							if ((j==2) && (currentParticleSystemCount < 2)) { currentParticleSystemCount = 2; };
+							if ((j==3) && (currentParticleSystemCount < 3)) { currentParticleSystemCount = 3; };
+							if ((j==4) && (currentParticleSystemCount < 4)) { currentParticleSystemCount = 4; };
+							if ((j==5) && (currentParticleSystemCount < 5)) { currentParticleSystemCount = 5; };
+								
+							particles[j] = new THREE.Geometry;
+			
+							// Generate particles
+						
+							partstartx = Math.random() * 2000 - 1000;
+							partstarty = Math.random() * 200 + 650;
+							partstartz = Math.random() * 2000 - 1000;
+							
+							// Random color
+							
+							particleColorBase = Math.random();
+							
+							// Iterate through color array and fill 
+							
+							for( var i = 0; i < particleCount; i++ ) {
+
+								// Vary color slightly for better effect
+								
+								particleColors[j][i] = new THREE.Color();
+								particleColors[j][i].setHSL( particleColorBase+Math.random()*.05, 1.0, .5 );
+
+							}
+
+							// Apply color array to particle geometry
+							
+							particles[j].colors = particleColors[j];
+							
+							// Generate the particles themselves
+							
+							for (var p = 0; p < particleCount; p++) {
+											
+								var particle = new THREE.Vector3(partstartx,partstarty,partstartz);
+				  
+								// Set initial velocity vectors
+						
+								particle.velocity = new THREE.Vector3(
+									.5-(Math.random()*1),.5-(Math.random()*1),.5-(Math.random()*1)
+								);
+				  
+							   particles[j].vertices[p] = particle;
+							   
+							}
+							
+
+							// Set generic particle material
+							
+							var particleTexture = THREE.ImageUtils.loadTexture('./snowflake.png');
+							
+							var particleMaterial = new THREE.ParticleBasicMaterial({
+							  map: particleTexture,
+							  color: 0xFFFFFF,
+							  size: 35,
+							  blending: THREE.AdditiveBlending,
+							  depthWrite: false,
+							  vertexColors: true,
+							  transparent: true,
+							  emissive: 0xFFFFFF,
+							  shininess: 100.0,
+							  ambient: 0xff0000
+							});
+							
+							// Apply particles and material to geometry
+							
+							scene.remove(particleSystem[j]);
+							particleSystem[j] = new THREE.ParticleSystem(particles[j], particleMaterial);
+							particleSystem[j].sortParticles = true;
+							
+							// ... and add geometry to scene.
+							
+							scene.add(particleSystem[j]);
+							
+							switch(j) {
+								case 0: document.getElementById('knall1').play(); break;
+								case 1: document.getElementById('knall2').play(); break;
+								case 2: document.getElementById('knall3').play(); break;
+								case 3: document.getElementById('knall4').play(); break;
+								case 4: document.getElementById('knall5').play(); break;
+								case 5: document.getElementById('knall6').play(); break;
+								default: break;
+							
+							};
+							particleLight[j].intensity = 5.0;
+							particleLight[j].color.setHSL ( particleColorBase+Math.random()*.05, 1.0, .5 );
+							particleLight[j].target.position.set(particles[j].vertices[0].x,particles[j].vertices[0].y-100,particles[j].vertices[0].z);
+							particleLight[j].castShadow = true;							
+							particleLight[j].position.set(particles[j].vertices[0].x,particles[j].vertices[0].y,particles[j].vertices[0].z);
+		
+					
+					}
+					
+					
+					
+					// Animate function
+					function animate() {
+
+							if (tower) { 
+								
+								$("#topbar").css("display","block"); $("#loader").css("display","none"); 
+
+								if (intervaltoggle == 0) {
+									setInterval("addFireworkParticles(0)",8000+Math.random()*500);
+									setInterval("addFireworkParticles(1)",5500+Math.random()*500);
+									setInterval("addFireworkParticles(2)",6000+Math.random()*500);
+									setInterval("addFireworkParticles(3)",6500+Math.random()*500);
+									setInterval("addFireworkParticles(4)",7000+Math.random()*500);
+									setInterval("addFireworkParticles(5)",7500+Math.random()*500);
+									setInterval("doTurn()",8000);
+									intervaltoggle++;
+								};
+
+							};
+
+							requestAnimationFrame(animate);
+						
+							lookpos = new THREE.Vector3(0,500,0);
+						
+							// camera.lookAt( lookpos );
+				 
+							 
+							switch (turningStage % 3) {
+							
+								case 0:
+									
+									camera.lookAt( lookpos );
+									
+									disx = (-2*camera.position.x)/100;
+									disz = (-2*camera.position.z)/100;
+									
+									break;
+								
+								
+								case 1:
+									
+									camera.lookAt( lookpos );
+									
+									if ((camera.position.z < 1501) && (camera.position.z > -1501)) {
+										camera.position.z += disz;
+									};
+									
+									if ((camera.position.x < 1501) && (camera.position.x > -1501)) {
+										camera.position.x += disx;
+									};
+				
+									
+									if (camera.position.z > 1500) { camera.position.z = 1500; };
+									if (camera.position.z < -1500) { camera.position.z = -1500; };
+						
+									if (camera.position.x > 1500) { camera.position.x = 1500; };
+									if (camera.position.x < -1500) { camera.position.x = -1500; };
+						
+									disx2 = (-2*camera.position.x)/100;
+									disz2 = (-2*camera.position.z)/100;
+													
+									zturner = 0;
+													
+									break;
+								
+								
+								case 2:
+																		
+									if ((camera.position.z < 1501) && (camera.position.z > -1501)) {
+										camera.position.z += disz2;
+									};
+									
+									if ((camera.position.x < 1501) && (camera.position.x > -1501)) {
+										camera.position.x += disx2;
+									};
+				
+									if (zturner < 96) {
+									
+										camera.rotation.z += (2*Math.PI)/100;
+										camera.rotation.y += (Math.PI)/100;
+
+										zturner += 1;
+										
+									} else {
+									
+										camera.lookAt(lookpos);
+									}
+									
+									break;
+								
+	
+													
+								default: break; 
+								
+								
+							}	
+							
+							// Particle animation
+							
+							// lumacheck: Index of luminance of all particles combined
+							
+							for (var j=0;j <= currentParticleSystemCount; j++) {
+						
+								var lumacheck = 0;
+								
+								// Iterate through all particles
+								
+								for (qq = 0; qq < particleCount; qq++) {
+
+									// Grab particle
+									
+									var particle = particles[j].vertices[qq];
+									
+									// Change velocity vectors
+									
+									particle.velocity.y += 8*Math.random()-4;
+									particle.velocity.x += 8*Math.random()-4;
+									particle.velocity.z += 8*Math.random()-4;
+									
+									particle.add(particle.velocity);
+
+									// Modify particle color
+									
+									particleCurrLuma = particleSystem[j].geometry.colors[qq].getHSL().l
+									particleCurrHue = particleSystem[j].geometry.colors[qq].getHSL().h
+									lumacheck += particleCurrLuma;
+									particleSystem[j].geometry.colors[qq].setHSL( particleCurrHue, 1.0, particleCurrLuma*.9 );
+									
+									
+								};
+
+								particleLight[j].intensity *= .9;
+								// If combined luma of all particles is too low, redraw fireworks.
+								
+								if (lumacheck < 5) { 
+																
+									for (qq = 0; qq < particleCount; qq++) {
+								
+										// move burnt-out particles out of sight forever
+										var particle = particles[j].vertices[qq];
+										particle.x = 20000;
+										particle.y = 20000;
+										particle.z = 20000;
+										
+									}
+								
+								};
+								
+								particleSystem[j].geometry.__dirtyVertices = true;							
+							
+							};
+							
+							renderer.render( scene, camera );
+							
+					}
+
+					// Empty callback function
+					function ctrl_callbk() { }
+
+
+			</script>
+	
+	</body>
+</html>
